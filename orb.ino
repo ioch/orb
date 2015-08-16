@@ -100,6 +100,7 @@ void setup() {
 
 void read_control() {
     const float duty = analogRead(DUTY_POT) / 1024.0;
+    off_delay = (unsigned long)(delay * duty);
 
     static bool last_tap_tempo = 0;
     static unsigned long last_tap = 0;
