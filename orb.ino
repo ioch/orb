@@ -160,6 +160,7 @@ void read_control() {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         if (delay < MAX_DELAY) {
+            MONITOR_EXPRESSION(delay);
             if (ndelays == 0) {
                 ndelays = 1;
                 delay0 = delay;
@@ -177,7 +178,12 @@ void read_control() {
             reset_off();
             reschedule();
 
-            Serial.println(delay);
+            MONITOR_EXPRESSION(delay0);
+            MONITOR_EXPRESSION(delay1);
+            MONITOR_EXPRESSION(delay);
+
+
+            Serial.println();
         }
     } else {
         if (millis() - last_button > MAX_DELAY) {
