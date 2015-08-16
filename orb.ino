@@ -3,9 +3,9 @@
 #define LED_G 10
 #define LED_B 11
 
-#define RIGHT_POT A0
-#define MIDDLE_POT A1
-#define LEFT_POT A3
+#define POT_RIGHT A0
+#define POT_MIDDLE A1
+#define POT_LEFT A3
 #define POT_GND A2
 #define POT_VCC A4
 
