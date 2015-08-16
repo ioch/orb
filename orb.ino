@@ -180,6 +180,7 @@ void read_control() {
 
             MONITOR_EXPRESSION(delay0);
             MONITOR_EXPRESSION(delay1);
+            MONITOR_EXPRESSION(ndelays);
             MONITOR_EXPRESSION(delay);
 
 
