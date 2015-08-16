@@ -134,6 +134,9 @@ void reset_off() {
     off_delay = (unsigned long)(on_delay * dutyf);
 }
 
+#define NDELAYS 3
+int delays 
+
 void read_control() {
     static int last_duty = duty;
     duty = analogRead(POT_LEFT);
