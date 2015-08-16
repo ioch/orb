@@ -109,6 +109,7 @@ void read_control() {
         last_tap = millis();
         on_delay = delay;
         off_delay = (unsigned long)(delay * duty);
+        reschedule();
     }
 }
 
