@@ -122,12 +122,16 @@ void setup() {
     reschedule();
 }
 
+void reset_off() {
+    float dutyf = 1.0 - duty / 1024.0;
+    off_delay = (unsigned long)(on_delay * dutyf);
+}
+
 void read_control() {
     static int last_duty = duty;
     duty = analogRead(POT_LEFT);
     if (abs(duty - last_duty) > 2) {
-        float dutyf = 1.0 - duty / 1024.0;
-        off_delay = (unsigned long)(on_delay * dutyf);
+        reset_off();
         reschedule();
     }
     last_duty = duty;
@@ -140,8 +144,7 @@ void read_control() {
         last_tap = millis();
         if (delay < MAX_DELAY) {
             on_delay = delay;
-            float dutyf = 1.0 - duty / 1024.0;
-            off_delay = (unsigned long)(on_delay * dutyf);
+            reset_off();
             reschedule();
         }
     }
