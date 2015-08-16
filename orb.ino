@@ -122,6 +122,7 @@ void read_control() {
         off_delay = (unsigned long)(delay * duty);
         reschedule();
     }
+    last_duty = duty;
 
     static unsigned long last_tap = 0;
     static bool last_button = 0;
