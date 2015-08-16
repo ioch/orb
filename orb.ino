@@ -9,8 +9,8 @@
 #define POT_GND A2
 #define POT_VCC A4
 
-#define BUTTON 6
-#define BUTTON_GND 7
+#define BUTTON_GND 6
+#define BUTTON 7
 
 void on() {
     unsigned char r, g, b;
