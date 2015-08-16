@@ -93,7 +93,7 @@ void setup() {
     reschedule();
 }
 
-void readControl() {
+void read_control() {
 }
 
 void loop() {
@@ -105,7 +105,7 @@ void loop() {
     } else if (millis() > next_off) {
         off();
     } else {
-        readControl();
+        read_control();
     }
 
     delay(1);
