@@ -151,7 +151,7 @@ void loop() {
     unsigned long t = millis();
 
     if (t > next_on) {
-        //on();
+        on();
         last_on = t;
         reschedule();
     } else if (t > next_off) {
