@@ -137,6 +137,7 @@ void read_control() {
         on();
         delay(42);
         off();
+        delay(42);
     if (button) {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
