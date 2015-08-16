@@ -121,14 +121,14 @@ void setup() {
 }
 
 void read_control() {
-    static int last_duty = analogRead(POT_LEFT);
-    int duty = analogRead(POT_LEFT);
-    if (abs(duty - last_duty) > 2) {
-        float dutyf = duty / 1024.0;
-        off_delay = (unsigned long)(on_delay * dutyf);
-        reschedule();
-    }
-    last_duty = duty;
+    //static int last_duty = analogRead(POT_LEFT);
+    //int duty = analogRead(POT_LEFT);
+    //if (abs(duty - last_duty) > 2) {
+    //    float dutyf = duty / 1024.0;
+    //    off_delay = (unsigned long)(on_delay * dutyf);
+    //    reschedule();
+    //}
+    //last_duty = duty;
 
     static unsigned long last_tap = 0;
     static bool last_button = 0;
