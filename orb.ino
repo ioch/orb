@@ -96,12 +96,14 @@ void setup() {
     pinMode(POT_LEFT, INPUT);
     pinMode(POT_MIDDLE, INPUT);
     pinMode(POT_RIGHT, INPUT);
-
     pinMode(POT_GND, OUTPUT);
     digitalWrite(POT_GND, LOW); 
     pinMode(POT_VCC, OUTPUT);
     digitalWrite(POT_VCC, HIGH); 
 
+    pinMode(BUTTON, INPUT);
+    pinMode(BUTTON_GND, OUTPUT);
+    digitalWrite(BUTTON_GND, LOW); 
 
     pinMode(LED_R, OUTPUT);
     digitalWrite(LED_R, LOW);
