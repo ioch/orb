@@ -91,6 +91,7 @@ void reschedule() {
     next_on = last_on + on_delay;
 }
 
+void setup() {
     // analog
     //pinMode(POT_LEFT, INPUT);
     //pinMode(POT_MIDDLE, INPUT);
