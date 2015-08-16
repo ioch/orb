@@ -1,6 +1,6 @@
-int ledR = 9;
-int ledG = 10;
-int ledB = 11;
+#define LED_R 9
+#define LED_G 10
+#define LED_B 11
 
 void on() {
     unsigned char r, g, b;
@@ -59,15 +59,15 @@ void on() {
             break;
     }
 
-    analogWrite(ledR, r);
-    analogWrite(ledG, g);
-    analogWrite(ledB, b);
+    analogWrite(LED_R, r);
+    analogWrite(LED_G, g);
+    analogWrite(LED_B, b);
 }
 
 void off() {
-    analogWrite(ledR, 0);
-    analogWrite(ledG, 0);
-    analogWrite(ledB, 0);
+    analogWrite(LED_R, 0);
+    analogWrite(LED_G, 0);
+    analogWrite(LED_B, 0);
 }
 
 unsigned long last_on = 0;
@@ -83,12 +83,12 @@ void setup() {
     // initialize the digital pin as an output.
     pinMode(8, OUTPUT);
     digitalWrite(8, LOW); 
-    pinMode(ledR, OUTPUT);
-    digitalWrite(ledR, LOW);
-    pinMode(ledG, OUTPUT);
-    digitalWrite(ledG, LOW);
-    pinMode(ledB, OUTPUT);
-    digitalWrite(ledB, LOW);
+    pinMode(LED_R, OUTPUT);
+    digitalWrite(LED_R, LOW);
+    pinMode(LED_G, OUTPUT);
+    digitalWrite(LED_G, LOW);
+    pinMode(LED_B, OUTPUT);
+    digitalWrite(LED_B, LOW);
 
     reschedule();
 }
