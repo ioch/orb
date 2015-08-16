@@ -89,10 +89,6 @@ void reschedule() {
     next_on = last_on + on_delay;
 }
 
-void setup() {                
-    pinMode(LED_GND, OUTPUT);
-    digitalWrite(LED_GND, LOW); 
-
     // analog
     //pinMode(POT_LEFT, INPUT);
     //pinMode(POT_MIDDLE, INPUT);
@@ -106,6 +102,8 @@ void setup() {
     pinMode(BUTTON_GND, OUTPUT);
     digitalWrite(BUTTON_GND, LOW); 
 
+    pinMode(LED_GND, OUTPUT);
+    digitalWrite(LED_GND, LOW); 
     pinMode(LED_R, OUTPUT);
     digitalWrite(LED_R, LOW);
     pinMode(LED_G, OUTPUT);
