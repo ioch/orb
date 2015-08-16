@@ -151,6 +151,7 @@ void loop() {
     if (millis() > next_on) {
         on();
         last_on = millis();
+        reschedule();
     } else if (millis() > next_off) {
         off();
     } else {
