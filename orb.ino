@@ -100,8 +100,10 @@ void setup() {
 
 void read_control() {
     static bool last_tap_tempo = 0;
+    static bool last_tap = 0;
     bool tap_tempo = digitalRead(TAP_TEMPO_BUTTON);
-    if (last_tap_tempo 
+    if (tap_tempo > last_tap_tempo) {
+    }
 }
 
 void loop() {
