@@ -18,7 +18,7 @@
 int duty = 512;
 
 unsigned char saturation = 255;
-unsigned char brightness = 0;
+unsigned char brightness = 255;
 
 unsigned long off_delay = 42;
 unsigned long on_delay = 84;
