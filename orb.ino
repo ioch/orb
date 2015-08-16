@@ -175,7 +175,7 @@ void read_control() {
             reschedule();
         }
     } else {
-        if (millis() - last_button > MAX_BUTTON) {
+        if (millis() - last_button > MAX_DELAY) {
             ndelays = 0;
         }
     }
