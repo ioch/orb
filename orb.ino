@@ -146,13 +146,13 @@ void read_control() {
 }
 
 void loop() {
-    unsigned long t = micros();
+    unsigned long t = millis();
 
-    if (millis() > next_on) {
+    if (t > next_on) {
         on();
-        last_on = millis();
+        last_on = t;
         reschedule();
-    } else if (millis() > next_off) {
+    } else if (t > next_off) {
         off();
     } else {
         read_control();
