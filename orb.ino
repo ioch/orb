@@ -116,7 +116,7 @@ void reschedule() {
 
 void read_control() {
     static last_
-    const float duty = analogRead(DUTY_POT) / 1024.0;
+    const float duty = analogRead(POT_LEFT) / 1024.0;
     off_delay = (unsigned long)(delay * duty);
     reschedule();
 
