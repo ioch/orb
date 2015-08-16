@@ -84,7 +84,7 @@ void off() {
 
 unsigned long last_on = 0;
 unsigned long off_delay = 42;
-unsigned long on_delay = 42;
+unsigned long on_delay = 100;
 unsigned long next_on = 0;
 unsigned long next_off = 0;
 
