@@ -97,6 +97,7 @@ void setup() {
 }
 
 void read_control() {
+    static bool last_tap_tempo = 0;
 }
 
 void loop() {
