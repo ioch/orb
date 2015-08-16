@@ -134,11 +134,10 @@ void read_control() {
     static unsigned long last_tap = 0;
     static bool last_button = 0;
     bool button = digitalRead(BUTTON);
+    if (button < last_button) {
         on();
         delay(42);
         off();
-        delay(42);
-    if (button) {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         if (delay < MAX_DELAY) {
@@ -161,7 +160,7 @@ void loop() {
     } else if (t > next_off) {
         off();
     } else {
-        //read_control();
+        read_control();
     }
 
     delay(1);
