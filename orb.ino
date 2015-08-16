@@ -165,7 +165,10 @@ void read_control() {
                 delay1 = delay;
                 delay = (delay0 + delay1) / 2;
             } else {
-                delay0 = delay1
+                delay0 = delay1;
+                delay1 = delay;
+                delay = (delay0 + delay1) / 2;
+            }
 
             on_delay = delay / 2;
             reset_off();
