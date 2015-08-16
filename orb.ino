@@ -2,18 +2,6 @@ int ledR = 9;
 int ledG = 10;
 int ledB = 11;
 
-void setup() {                
-    // initialize the digital pin as an output.
-    pinMode(8, OUTPUT);
-    digitalWrite(8, LOW); 
-    pinMode(ledR, OUTPUT);
-    digitalWrite(ledR, LOW);
-    pinMode(ledG, OUTPUT);
-    digitalWrite(ledG, LOW);
-    pinMode(ledB, OUTPUT);
-    digitalWrite(ledB, LOW);
-}
-
 void on() {
     unsigned char r, g, b;
     unsigned char h = random(255);
@@ -86,6 +74,30 @@ unsigned long last_on = 0;
 unsigned long off_delay = 42;
 unsigned long on_delay = 42;
 
+void reschedule() {
+    next_off = last_on + off_delay;
+    next_on = last_on + on_delay;
+}
+
+void setup() {                
+    // initialize the digital pin as an output.
+    pinMode(8, OUTPUT);
+    digitalWrite(8, LOW); 
+    pinMode(ledR, OUTPUT);
+    digitalWrite(ledR, LOW);
+    pinMode(ledG, OUTPUT);
+    digitalWrite(ledG, LOW);
+    pinMode(ledB, OUTPUT);
+    digitalWrite(ledB, LOW);
+
+    reschedule();
+}
+
 void loop() {
+    unsigned long t = micros();
+
+    if (millis() > last_on + on_delay) {
+
+
     delay(1);
 }
