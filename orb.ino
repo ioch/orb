@@ -157,6 +157,8 @@ void read_control() {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         if (delay < MAX_DELAY) {
+            ndelays = 1;
+
             on_delay = delay / 2;
             reset_off();
             reschedule();
