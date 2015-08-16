@@ -138,8 +138,8 @@ void read_control() {
         last_tap = millis();
         if (delay < MAX_DELAY) {
             on_delay = delay;
-            float dutyf = duty / 1024.0;
-            off_delay = (unsigned long)(on_delay * duty);
+            float dutyf = 1.0 - duty / 1024.0;
+            off_delay = (unsigned long)(on_delay * dutyf);
             reschedule();
         }
     }
