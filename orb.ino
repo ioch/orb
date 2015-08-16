@@ -191,7 +191,7 @@ void read_control() {
         }
     }
 
-    if (millis() - last_button > MAX_DELAY) {
+    if (millis() - last_tap > MAX_DELAY) {
         ndelays = 0;
     }
 
