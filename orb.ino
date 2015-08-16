@@ -98,7 +98,7 @@ void reschedule() {
     pinMode(POT_VCC, OUTPUT);
     digitalWrite(POT_VCC, HIGH); 
 
-    pinMode(BUTTON, INPUT);
+    pinMode(BUTTON, INPUT_PULLUP);
     pinMode(BUTTON_GND, OUTPUT);
     digitalWrite(BUTTON_GND, LOW); 
 
