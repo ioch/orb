@@ -96,8 +96,14 @@ void setup() {
 void loop() {
     unsigned long t = micros();
 
-    if (millis() > last_on + on_delay) {
-
+    if (millis() > next_on) {
+        on();
+        last_on = millis();
+    } else if (millis() > next_off) {
+        off();
+    } else {
+        readControl;
+    }
 
     delay(1);
 }
