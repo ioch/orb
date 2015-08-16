@@ -160,7 +160,7 @@ void loop() {
     } else if (t > next_off) {
         off();
     } else {
-        read_control();
+        //read_control();
     }
 
     delay(1);
