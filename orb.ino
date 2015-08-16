@@ -14,6 +14,7 @@
 #define BUTTON_GND 6
 #define BUTTON 7
 
+
 int duty = 512;
 
 int saturation = 255;
@@ -24,6 +25,7 @@ unsigned long on_delay = 84;
 unsigned long last_on = 0;
 unsigned long next_on = 0;
 unsigned long next_off = 0;
+
 
 void on() {
     unsigned char r, g, b;
