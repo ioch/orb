@@ -148,11 +148,6 @@ void read_control() {
 }
 
 void loop() {
-    //on();
-    //delay(42);
-    //off();
-    //delay(42);
-
     unsigned long t = millis();
 
     if (t > next_on) {
