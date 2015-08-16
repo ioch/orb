@@ -146,17 +146,22 @@ void read_control() {
 }
 
 void loop() {
-    unsigned long t = millis();
+    on();
+    delay(42);
+    off();
+    delay(42);
 
-    if (t > next_on) {
-        on();
-        last_on = t;
-        reschedule();
-    } else if (t > next_off) {
-        off();
-    } else {
-        read_control();
-    }
+    //unsigned long t = millis();
 
-    delay(1);
+    //if (t > next_on) {
+    //    on();
+    //    last_on = t;
+    //    reschedule();
+    //} else if (t > next_off) {
+    //    off();
+    //} else {
+    //    read_control();
+    //}
+
+    //delay(1);
 }
