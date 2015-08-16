@@ -132,8 +132,8 @@ void read_control() {
     bool button = digitalRead(BUTTON);
     if (button < last_button) {
         unsigned long delay = millis() - last_tap;
+        last_tap = millis();
         if (delay < MAX_DELAY) {
-            last_tap = millis();
             on_delay = delay;
             float dutyf = duty / 1024.0;
             off_delay = (unsigned long)(on_delay * duty);
