@@ -135,6 +135,8 @@ void reset_off() {
 }
 
 int ndelays = 0;
+int delay0 = 0;
+int delay1 = 0;
 
 void read_control() {
     static int last_duty = duty;
@@ -155,10 +157,6 @@ void read_control() {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         if (delay < MAX_DELAY) {
-            delays[ndelays] = delay;
-            ++ndelays;
-
-            float meandelay
 
             on_delay = delay / 2;
             reset_off();
