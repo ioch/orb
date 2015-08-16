@@ -173,6 +173,8 @@ void read_control() {
             on_delay = delay / 2;
             reset_off();
             reschedule();
+
+            Serial.println(delay);
         }
     } else {
         if (millis() - last_button > MAX_DELAY) {
