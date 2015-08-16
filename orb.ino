@@ -82,7 +82,7 @@ void off() {
     analogWrite(LED_B, 0);
 }
 
-int duty = 0;
+int duty = 512;
 
 unsigned long off_delay = 42;
 unsigned long on_delay = 84;
