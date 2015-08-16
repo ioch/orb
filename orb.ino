@@ -189,7 +189,9 @@ void read_control() {
 
             Serial.println();
         }
-    } else if (millis() - last_button > MAX_DELAY) {
+    }
+
+    if (millis() - last_button > MAX_DELAY) {
         ndelays = 0;
     }
 
