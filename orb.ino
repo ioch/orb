@@ -153,11 +153,12 @@ void loop() {
         on();
         last_on = t;
         reschedule();
-    } else if (t > next_off) {
-        off();
-    } else {
-        read_control();
     }
+    if (t > next_off) {
+        off();
+    }
+
+    read_control();
 
     delay(1);
 }
