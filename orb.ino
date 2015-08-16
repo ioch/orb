@@ -143,8 +143,8 @@ void read_control() {
     }
     last_duty = duty;
 
-    saturation = min(255 - analogRead(POT_MIDDLE) / 4, 254);
-    brightness = min(255 - analogRead(POT_RIGHT) / 4, 254);
+    saturation = max(255 - analogRead(POT_MIDDLE) / 4, 10);
+    brightness = max(255 - analogRead(POT_RIGHT) / 4, 0);
 
     static unsigned long last_tap = 0;
     static bool last_button = 0;
