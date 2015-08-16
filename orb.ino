@@ -139,6 +139,8 @@ int ndelays = 0;
 int delay0 = 0;
 int delay1 = 0;
 
+bool is_on = false;
+
 #define MONITOR_EXPRESSION(x) { Serial.print(#x ": "); Serial.println((x)); }
 
 void read_control() {
