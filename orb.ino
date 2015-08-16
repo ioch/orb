@@ -1,20 +1,16 @@
+#define LED_GND 8
 #define LED_R 9
 #define LED_G 10
 #define LED_B 11
 
-#define TAP_TEMPO_BUTTON 0
-#define DUTY_POT 0
-
 #define RIGHT_POT A0
 #define MIDDLE_POT A1
 #define LEFT_POT A3
-    pinMode(A0, INPUT); // rightmost
-    pinMode(A1, INPUT); // middle
-    pinMode(A2, OUTPUT);
-    digitalWrite(A2, LOW);
-    pinMode(A3, INPUT);
-    pinMode(A4, OUTPUT);
-    digitalWrite(A4, HIGH);
+#define POT_GND A2
+#define POT_VCC A4
+
+#define BUTTON 6
+#define BUTTON_GND 7
 
 void on() {
     unsigned char r, g, b;
