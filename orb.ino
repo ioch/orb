@@ -121,8 +121,8 @@ void read_control() {
     reschedule();
 
     static unsigned long last_tap = 0;
-    static bool last_tap_tempo = 0;
-    bool tap_tempo = digitalRead(TAP_TEMPO_BUTTON);
+    static bool last_button = 0;
+    bool button = digitalRead(BUTTON);
     if (tap_tempo < last_tap_tempo) {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
