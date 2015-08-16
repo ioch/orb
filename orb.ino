@@ -90,16 +90,17 @@ void reschedule() {
 }
 
 void setup() {                
-    pinMode(8, OUTPUT);
-    digitalWrite(8, LOW); 
+    pinMode(LED_GND, OUTPUT);
+    digitalWrite(LED_GND, LOW); 
 
-    pinMode(A0, INPUT); // rightmost
-    pinMode(A1, INPUT); // middle
-    pinMode(A2, OUTPUT);
-    digitalWrite(A2, LOW);
-    pinMode(A3, INPUT);
-    pinMode(A4, OUTPUT);
-    digitalWrite(A4, HIGH);
+    pinMode(POT_LEFT, INPUT);
+    pinMode(POT_MIDDLE, INPUT);
+    pinMode(POT_RIGHT, INPUT);
+    pinMode(POT_GND, OUTPUT);
+    digitalWrite(POT_GND, LOW); 
+    pinMode(POT_VCC, OUTPUT);
+    digitalWrite(POT_VCC, LOW); 
+
 
     pinMode(LED_R, OUTPUT);
     digitalWrite(LED_R, LOW);
