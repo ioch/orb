@@ -111,8 +111,6 @@ void reschedule() {
     pinMode(LED_B, OUTPUT);
     digitalWrite(LED_B, LOW);
 
-    pinMode(TAP_TEMPO_BUTTON, INPUT_PULLUP);
-
     reschedule();
 }
 
