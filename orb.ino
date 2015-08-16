@@ -93,9 +93,10 @@ void setup() {
     pinMode(LED_GND, OUTPUT);
     digitalWrite(LED_GND, LOW); 
 
-    pinMode(POT_LEFT, INPUT);
-    pinMode(POT_MIDDLE, INPUT);
-    pinMode(POT_RIGHT, INPUT);
+    // analog
+    //pinMode(POT_LEFT, INPUT);
+    //pinMode(POT_MIDDLE, INPUT);
+    //pinMode(POT_RIGHT, INPUT);
     pinMode(POT_GND, OUTPUT);
     digitalWrite(POT_GND, LOW); 
     pinMode(POT_VCC, OUTPUT);
