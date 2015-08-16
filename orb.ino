@@ -2,6 +2,9 @@
 #define LED_G 10
 #define LED_B 11
 
+#define TAP_TEMPO_BUTTON 0
+#define DUTY_POT 0
+
 void on() {
     unsigned char r, g, b;
     unsigned char h = random(255);
