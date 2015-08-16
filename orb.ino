@@ -123,7 +123,7 @@ void setup() {
 }
 
 void read_control() {
-    static int last_duty = analogRead(POT_LEFT);
+    static int last_duty = duty;
     int duty = analogRead(POT_LEFT);
     if (abs(duty - last_duty) > 2) {
         float dutyf = 1.0 - duty / 1024.0;
