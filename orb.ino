@@ -162,6 +162,8 @@ void read_control() {
             on_delay = delay / 2;
             reset_off();
             reschedule();
+        } else {
+            ndelays = 0;
         }
     }
     last_button = button;
