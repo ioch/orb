@@ -87,5 +87,5 @@ unsigned long off_delay = 42;
 unsigned long on_delay = 42;
 
 void loop() {
+    delay(1);
 }
-
