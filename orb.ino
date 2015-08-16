@@ -135,7 +135,8 @@ void reset_off() {
 }
 
 #define NDELAYS 3
-int delays 
+int ndelays = 1;
+int delays[NDELAYS] =
 
 void read_control() {
     static int last_duty = duty;
