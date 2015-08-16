@@ -100,10 +100,10 @@ void setup() {
 
 void read_control() {
     static bool last_tap_tempo = 0;
-    static int last_tap = 0;
+    static unsigned long last_tap = 0;
     bool tap_tempo = digitalRead(TAP_TEMPO_BUTTON);
     if (tap_tempo > last_tap_tempo) {
-        int delay = millis() - last_tap;
+        unsigned long delay = millis() - last_tap;
     }
 }
 
