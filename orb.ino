@@ -157,6 +157,15 @@ void read_control() {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         if (delay < MAX_DELAY) {
+            if (ndelays == 0) {
+                ndelays = 1;
+                delay0 = delay;
+            } else if (ndelays == 1) {
+                ndelays = 1;
+                delay1 = delay;
+                delay = (delay0 + delay1) / 2;
+            } else {
+                delay0 = delay1
 
             on_delay = delay / 2;
             reset_off();
