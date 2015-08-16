@@ -1,3 +1,5 @@
+#define MAX_DELAY 2000
+
 #define LED_GND 8
 #define LED_R 9
 #define LED_G 10
