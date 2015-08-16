@@ -8,8 +8,8 @@
 #define POT_RIGHT A0
 #define POT_MIDDLE A1
 #define POT_LEFT A3
-#define POT_GND A2
-#define POT_VCC A4
+#define POT_GND A4
+#define POT_VCC A2
 
 #define BUTTON_GND 6
 #define BUTTON 7
@@ -130,7 +130,7 @@ void setup() {
 }
 
 void reset_off() {
-    float dutyf = 1.0 - duty / 1024.0;
+    float dutyf = duty / 1024.0;
     off_delay = (unsigned long)(on_delay * dutyf);
 }
 
@@ -143,8 +143,8 @@ void read_control() {
     }
     last_duty = duty;
 
-    saturation = 255 - analogRead(POT_MIDDLE) / 4;
-    brightness = 255 - analogRead(POT_RIGHT) / 4;
+    saturation = analogRead(POT_MIDDLE) / 4;
+    brightness = analogRead(POT_RIGHT) / 4;
 
     static unsigned long last_tap = 0;
     static bool last_button = 0;
