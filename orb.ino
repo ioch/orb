@@ -175,7 +175,7 @@ void read_control() {
                 delay = (delay0 + delay1) / 2;
             }
 
-            if (!active && ndelays == 2) {
+            if (!active && ndelays > 1) {
                 active = true;
                 last_on = millis();
                 reschedule();
