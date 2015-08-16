@@ -139,7 +139,7 @@ int ndelays = 0;
 int delay0 = 0;
 int delay1 = 0;
 
-bool is_on = false;
+bool active = false;
 
 #define MONITOR_EXPRESSION(x) { Serial.print(#x ": "); Serial.println((x)); }
 
@@ -200,7 +200,7 @@ void read_control() {
 void loop() {
     unsigned long t = millis();
 
-    if (t > next_on) {
+    if (active && t > next_on) {
         on();
         last_on = t;
         reschedule();
