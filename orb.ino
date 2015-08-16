@@ -8,8 +8,8 @@
 #define POT_RIGHT A0
 #define POT_MIDDLE A1
 #define POT_LEFT A3
-#define POT_GND A4
-#define POT_VCC A2
+#define POT_GND A2
+#define POT_VCC A4
 
 #define BUTTON_GND 6
 #define BUTTON 7
