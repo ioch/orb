@@ -84,6 +84,8 @@ void off() {
 
 int duty = 512;
 
+int saturation = 255;
+
 unsigned long off_delay = 42;
 unsigned long on_delay = 84;
 
