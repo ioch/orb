@@ -93,7 +93,7 @@ void setup() {
     pinMode(LED_B, OUTPUT);
     digitalWrite(LED_B, LOW);
 
-    pinMode(TAP_TEMPO_BUTTON, INPUT);
+    pinMode(TAP_TEMPO_BUTTON, INPUT_PULLUP);
 
     reschedule();
 }
