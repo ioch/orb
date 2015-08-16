@@ -93,11 +93,15 @@ void setup() {
     pinMode(LED_B, OUTPUT);
     digitalWrite(LED_B, LOW);
 
+    pinMode(TAP_TEMPO_BUTTON, INPUT);
+
     reschedule();
 }
 
 void read_control() {
     static bool last_tap_tempo = 0;
+    bool tap_tempo = digitalRead(TAP_TEMPO_BUTTON);
+    if (last_tap_tempo 
 }
 
 void loop() {
