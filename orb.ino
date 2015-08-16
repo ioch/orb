@@ -134,9 +134,7 @@ void reset_off() {
     off_delay = (unsigned long)(on_delay * dutyf);
 }
 
-#define NDELAYS 3
-int ndelays = 1;
-int delays[NDELAYS] = { 0 };
+int ndelays = 0;
 
 void read_control() {
     static int last_duty = duty;
@@ -159,6 +157,8 @@ void read_control() {
         if (delay < MAX_DELAY) {
             delays[ndelays] = delay;
             ++ndelays;
+
+            float meandelay
 
             on_delay = delay / 2;
             reset_off();
