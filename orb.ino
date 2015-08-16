@@ -169,11 +169,16 @@ void read_control() {
                 ndelays = 2;
                 delay1 = delay;
                 delay = (delay0 + delay1) / 2;
-                active = true;
             } else {
                 delay0 = delay1;
                 delay1 = delay;
                 delay = (delay0 + delay1) / 2;
+            }
+
+            if (!active && ndelays == 2) {
+                active = true;
+                last_on = millis();
+                reschedule();
             }
 
             on_delay = delay / 2;
