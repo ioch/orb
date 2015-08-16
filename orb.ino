@@ -104,6 +104,7 @@ void reschedule() {
 }
 
 void setup() {
+    Serial.begin(9600);
     // analog
     //pinMode(POT_LEFT, INPUT);
     //pinMode(POT_MIDDLE, INPUT);
