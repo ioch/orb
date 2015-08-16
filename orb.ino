@@ -170,6 +170,7 @@ void read_control() {
                 ndelays = 2;
                 delay1 = delay;
                 delay = (delay0 + delay1) / 2;
+                active = true;
             } else {
                 delay0 = delay1;
                 delay1 = delay;
