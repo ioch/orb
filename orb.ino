@@ -134,6 +134,10 @@ void reset_off() {
     off_delay = (unsigned long)(on_delay * dutyf);
 }
 
+int ndelays = 0;
+int delay0 = 0;
+int delay1 = 0;
+
 void read_control() {
     static int last_duty = duty;
     duty = analogRead(POT_LEFT);
@@ -153,11 +157,29 @@ void read_control() {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         if (delay < MAX_DELAY) {
+            if (ndelays == 0) {
+                ndelays = 1;
+                delay0 = delay;
+            } else if (ndelays == 1) {
+                ndelays = 1;
+                delay1 = delay;
+                delay = (delay0 + delay1) / 2;
+            } else {
+                delay0 = delay1;
+                delay1 = delay;
+                delay = (delay0 + delay1) / 2;
+            }
+
             on_delay = delay / 2;
             reset_off();
             reschedule();
         }
+    } else {
+        if (millis() - last_button > MAX_BUTTON) {
+            ndelays = 0;
+        }
     }
+
     last_button = button;
 }
 
