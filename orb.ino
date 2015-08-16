@@ -119,7 +119,7 @@ void read_control() {
     int duty = analogRead(POT_LEFT);
     if (duty != last_duty) {
         float dutyf = duty / 1024.0;
-        off_delay = (unsigned long)(delay * duty);
+        off_delay = (unsigned long)(on_delay * duty);
         reschedule();
     }
     last_duty = duty;
@@ -131,7 +131,7 @@ void read_control() {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         on_delay = delay;
-        off_delay = (unsigned long)(delay * duty);
+        off_delay = (unsigned long)(ondelay * duty);
         reschedule();
     }
     last_button = button;
