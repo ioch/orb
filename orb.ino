@@ -131,6 +131,7 @@ void read_control() {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         on_delay = delay;
+        float dutyf = duty / 1024.0;
         off_delay = (unsigned long)(on_delay * duty);
         reschedule();
     }
