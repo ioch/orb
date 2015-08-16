@@ -165,7 +165,7 @@ void read_control() {
                 ndelays = 1;
                 delay0 = delay;
             } else if (ndelays == 1) {
-                ndelays = 1;
+                ndelays = 2;
                 delay1 = delay;
                 delay = (delay0 + delay1) / 2;
             } else {
