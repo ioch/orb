@@ -34,7 +34,7 @@ void on() {
     unsigned char r, g, b;
     unsigned char h = random(255);
     unsigned char s = saturation;
-    unsigned char v = 255;
+    unsigned char v = brightness;
     unsigned char region, fpart, p, q, t;
 
     if(s == 0) {
