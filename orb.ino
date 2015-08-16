@@ -144,6 +144,7 @@ void read_control() {
     last_duty = duty;
 
     analogRead(POT_MIDDLE);
+    analogRead(POT_RIGHT);
     //saturation = analogRead(POT_MIDDLE) / 4;
     //brightness = analogRead(POT_RIGHT) / 4;
 
