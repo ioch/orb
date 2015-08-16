@@ -99,19 +99,23 @@ void setup() {
 }
 
 void read_control() {
+    static last_
     const float duty = analogRead(DUTY_POT) / 1024.0;
     off_delay = (unsigned long)(delay * duty);
+    reschedule();
 
     static bool last_tap_tempo = 0;
     static unsigned long last_tap = 0;
     bool tap_tempo = digitalRead(TAP_TEMPO_BUTTON);
-    if (tap_tempo > last_tap_tempo) {
+    if (tap_tempo < last_tap_tempo) {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         on_delay = delay;
         off_delay = (unsigned long)(delay * duty);
         reschedule();
     }
+
+
 }
 
 void loop() {
