@@ -131,8 +131,6 @@ void read_control() {
         reschedule();
     }
     last_button = button;
-
-
 }
 
 void loop() {
