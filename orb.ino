@@ -117,6 +117,7 @@ void reschedule() {
 void read_control() {
     static int last_duty = analogRead(POT_LEFT);
     int duty = analogRead(POT_LEFT);
+    if (duty != last_duty) {
     float dutyf = duty / 1024.0;
     off_delay = (unsigned long)(delay * duty);
     reschedule();
