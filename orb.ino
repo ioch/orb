@@ -131,7 +131,7 @@ void read_control() {
         unsigned long delay = millis() - last_tap;
         last_tap = millis();
         on_delay = delay;
-        off_delay = (unsigned long)(ondelay * duty);
+        off_delay = (unsigned long)(on_delay * duty);
         reschedule();
     }
     last_button = button;
