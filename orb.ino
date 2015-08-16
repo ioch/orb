@@ -104,7 +104,6 @@ void reschedule() {
 }
 
 void setup() {
-    Serial.begin(9600);
     // analog
     //pinMode(POT_LEFT, INPUT);
     //pinMode(POT_MIDDLE, INPUT);
@@ -185,9 +184,6 @@ void read_control() {
             MONITOR_EXPRESSION(delay1);
             MONITOR_EXPRESSION(ndelays);
             MONITOR_EXPRESSION(delay);
-
-
-            Serial.println();
         }
     }
 
