@@ -14,10 +14,21 @@
 #define BUTTON_GND 6
 #define BUTTON 7
 
+int duty = 512;
+
+int saturation = 255;
+
+unsigned long off_delay = 42;
+unsigned long on_delay = 84;
+
+unsigned long last_on = 0;
+unsigned long next_on = 0;
+unsigned long next_off = 0;
+
 void on() {
     unsigned char r, g, b;
     unsigned char h = random(255);
-    unsigned char s = 255;
+    unsigned char s = saturation;
     unsigned char v = 255;
     unsigned char region, fpart, p, q, t;
 
@@ -81,17 +92,6 @@ void off() {
     analogWrite(LED_G, 0);
     analogWrite(LED_B, 0);
 }
-
-int duty = 512;
-
-int saturation = 255;
-
-unsigned long off_delay = 42;
-unsigned long on_delay = 84;
-
-unsigned long last_on = 0;
-unsigned long next_on = 0;
-unsigned long next_off = 0;
 
 void reschedule() {
     next_off = last_on + off_delay;
