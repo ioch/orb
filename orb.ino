@@ -102,7 +102,7 @@ void loop() {
     } else if (millis() > next_off) {
         off();
     } else {
-        readControl;
+        readControl();
     }
 
     delay(1);
