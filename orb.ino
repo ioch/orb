@@ -93,6 +93,9 @@ void setup() {
     reschedule();
 }
 
+void readControl() {
+}
+
 void loop() {
     unsigned long t = micros();
 
