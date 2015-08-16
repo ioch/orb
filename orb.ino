@@ -173,10 +173,13 @@ void read_control() {
             on_delay = delay / 2;
             reset_off();
             reschedule();
-        } else {
+        }
+    } else {
+        if (millis() - last_button > MAX_BUTTON) {
             ndelays = 0;
         }
     }
+
     last_button = button;
 }
 
