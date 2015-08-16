@@ -5,6 +5,17 @@
 #define TAP_TEMPO_BUTTON 0
 #define DUTY_POT 0
 
+#define RIGHT_POT A0
+#define MIDDLE_POT A1
+#define LEFT_POT A3
+    pinMode(A0, INPUT); // rightmost
+    pinMode(A1, INPUT); // middle
+    pinMode(A2, OUTPUT);
+    digitalWrite(A2, LOW);
+    pinMode(A3, INPUT);
+    pinMode(A4, OUTPUT);
+    digitalWrite(A4, HIGH);
+
 void on() {
     unsigned char r, g, b;
     unsigned char h = random(255);
@@ -83,9 +94,17 @@ void reschedule() {
 }
 
 void setup() {                
-    // initialize the digital pin as an output.
     pinMode(8, OUTPUT);
     digitalWrite(8, LOW); 
+
+    pinMode(A0, INPUT); // rightmost
+    pinMode(A1, INPUT); // middle
+    pinMode(A2, OUTPUT);
+    digitalWrite(A2, LOW);
+    pinMode(A3, INPUT);
+    pinMode(A4, OUTPUT);
+    digitalWrite(A4, HIGH);
+
     pinMode(LED_R, OUTPUT);
     digitalWrite(LED_R, LOW);
     pinMode(LED_G, OUTPUT);
@@ -104,8 +123,8 @@ void read_control() {
     off_delay = (unsigned long)(delay * duty);
     reschedule();
 
-    static bool last_tap_tempo = 0;
     static unsigned long last_tap = 0;
+    static bool last_tap_tempo = 0;
     bool tap_tempo = digitalRead(TAP_TEMPO_BUTTON);
     if (tap_tempo < last_tap_tempo) {
         unsigned long delay = millis() - last_tap;
@@ -114,6 +133,7 @@ void read_control() {
         off_delay = (unsigned long)(delay * duty);
         reschedule();
     }
+    last_tap_tempo = 
 
 
 }
