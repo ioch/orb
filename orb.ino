@@ -121,7 +121,6 @@ void setup() {
 }
 
 void read_control() {
-    static int duty = 512;
     static int last_duty = analogRead(POT_LEFT);
     int duty = analogRead(POT_LEFT);
     if (abs(duty - last_duty) > 2) {
