@@ -1,4 +1,4 @@
-#define MAX_DELAY 2000
+#define MAX_DELAY 2000000
 
 #define LED_GND 8
 #define LED_R 9
@@ -134,9 +134,9 @@ void reset_off() {
     off_delay = (unsigned long)(on_delay * dutyf);
 }
 
-int ndelays = 0;
-int delay0 = 0;
-int delay1 = 0;
+unsigned long ndelays = 0;
+unsigned long delay0 = 0;
+unsigned long delay1 = 0;
 
 bool active = false;
 
@@ -158,8 +158,8 @@ void read_control() {
     static bool last_button = 0;
     bool button = digitalRead(BUTTON);
     if (button < last_button) {
-        unsigned long delay = millis() - last_tap;
-        last_tap = millis();
+        unsigned long delay = micros() - last_tap;
+        last_tap = micros();
         if (delay < MAX_DELAY) {
             MONITOR_EXPRESSION(delay);
             if (ndelays == 0) {
@@ -177,7 +177,7 @@ void read_control() {
 
             if (!active && ndelays > 1) {
                 active = true;
-                last_on = millis();
+                last_on = micros();
                 reschedule();
             }
 
@@ -192,7 +192,7 @@ void read_control() {
         }
     }
 
-    if (millis() - last_tap > MAX_DELAY) {
+    if (micros() - last_tap > MAX_DELAY) {
         ndelays = 0;
     }
 
@@ -200,7 +200,7 @@ void read_control() {
 }
 
 void loop() {
-    unsigned long t = millis();
+    unsigned long t = micros();
 
     if (active && t > next_on) {
         on();
@@ -213,5 +213,5 @@ void loop() {
 
     read_control();
 
-    delay(1);
+    delayMicroseconds(1);
 }
