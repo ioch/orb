@@ -1,0 +1,46 @@
+#N canvas 0 114 450 657 16;
+#X obj 108 393 comport 0 115200;
+#X obj 113 -44 vsl 15 128 0 1023 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 5400 1;
+#X obj 113 104 i;
+#X obj 152 -45 vsl 15 128 0 1023 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 1900 1;
+#X obj 152 104 i;
+#X obj 191 -45 vsl 15 128 0 1023 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 1300 1;
+#X obj 191 104 i;
+#X obj 77 -44 vsl 15 128 0 1023 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 500 1;
+#X obj 74 104 i;
+#X msg 290 209 verbose 1;
+#X obj 66 148 pack f f f f;
+#X obj 263 445 print;
+#X msg 189 349 info \, help;
+#X msg 192 212 open 0;
+#X obj 59 215 list2symbol;
+#X obj 49 355 print;
+#X obj 57 303 ascseq;
+#X obj 248 291 sendOSC;
+#X obj 61 258 addnewline;
+#X msg 20 112 bang;
+#X connect 0 1 11 0;
+#X connect 1 0 2 0;
+#X connect 2 0 10 1;
+#X connect 2 0 19 0;
+#X connect 3 0 4 0;
+#X connect 4 0 10 2;
+#X connect 4 0 19 0;
+#X connect 5 0 6 0;
+#X connect 6 0 10 3;
+#X connect 6 0 19 0;
+#X connect 7 0 8 0;
+#X connect 8 0 10 0;
+#X connect 9 0 0 0;
+#X connect 10 0 14 0;
+#X connect 12 0 0 0;
+#X connect 13 0 0 0;
+#X connect 14 0 18 0;
+#X connect 14 0 15 0;
+#X connect 16 0 0 0;
+#X connect 18 0 16 0;
+#X connect 19 0 10 0;

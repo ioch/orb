@@ -32,6 +32,16 @@ enum OrbMode {
     MODE_PATTERN
 } mode = MODE_DIRECT;
 
+#define PATTERN_SIZE 4
+rgb rgb_pattern[PATTERN_SIZE] = {
+    rgb(255, 255, 255), rgb(0, 255, 0), rgb(255, 255, 255), rgb(0, 255, 0),
+};
+int duty_pattern[PATTERN_SIZE] = {
+    512, 1, 1, 1,
+};
+int pattern_index;
+
+
 int duty = ANALOG_MAX / 2;
 
 unsigned char saturation = 255;
@@ -47,7 +57,7 @@ unsigned long next_off = 0;
 
 
 void reschedule() {
-    const unsigned long off_delay = (unsigned long)(blink_period * (ANALOG_MAX - duty) / ANALOG_MAX);
+    const unsigned long off_delay = (unsigned long)(blink_period * duty / ANALOG_MAX);
     next_off = last_on + off_delay;
     next_on = last_on + blink_period;
 }
@@ -59,10 +69,20 @@ void set_color(rgb c) {
 }
 
 void on() {
-    set_color(
-        hsv(random(255),
-            saturation,
-            brightness));
+    switch (mode) {
+        case MODE_DIRECT:
+            set_color(
+                hsv(random(255),
+                    saturation,
+                    brightness));
+            break;
+
+        case MODE_PATTERN:
+            set_color(rgb_pattern[pattern_index].scaled(brightness));
+            duty = duty_pattern[pattern_index];
+            pattern_index = (pattern_index + 1) % PATTERN_SIZE;
+            break;
+    }
 
     last_on = micros();
     reschedule();
@@ -73,7 +93,20 @@ void off() {
 }
 
 
+void message_ready() {
+    while (messenger.available()) {
+        mode = MODE_PATTERN;
+        for (int i = 0; i < PATTERN_SIZE; ++i) {
+            duty_pattern[i] = messenger.readInt();
+        }
+    }
+}
+
+
 void setup() {
+    Serial.begin(115200); 
+    messenger.attach(message_ready);
+
     // 32kHz PWM frequency
     TCCR1B = (TCCR1B & 0b11111000) | 1;
     TCCR2B = (TCCR2B & 0b11111000) | 1;
@@ -113,7 +146,7 @@ TapTempo tap_tempo(MAX_DELAY, set_period);
 
 void read_control() {
     static int last_duty = duty;
-    duty = analogRead(POT_LEFT);
+    duty = ANALOG_MAX - analogRead(POT_LEFT);
     if (abs(duty - last_duty) > 2) {
         reschedule();
     }
@@ -141,6 +174,10 @@ void loop() {
     }
 
     read_control();
+
+    while (Serial.available()) {
+        messenger.process(Serial.read());
+    }
 
     delayMicroseconds(1);
 }

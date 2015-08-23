@@ -1,9 +1,16 @@
 struct rgb {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
+    const unsigned char r;
+    const unsigned char g;
+    const unsigned char b;
 
     rgb(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b) {}
+
+    rgb scaled(unsigned char scale) {
+        return rgb(
+            r * scale / 255,
+            g * scale / 255,
+            b * scale / 255);
+    }
 };
 
 
