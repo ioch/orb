@@ -1,4 +1,13 @@
+#include <Messenger.h>
+#include "color.h"
+#include "taptempo.h"
+
+#define MONITOR_EXPRESSION(x) { Serial.print(#x ": "); Serial.println((x)); }
+
+// Timeout for tap-tempo, in microseconds:
 #define MAX_DELAY 2000000
+
+#define ANALOG_MAX 1024
 
 #define LED_GND 8
 #define LED_R 9
@@ -15,99 +24,60 @@
 #define BUTTON 7
 
 
-int duty = 512;
+Messenger messenger;
+
+
+enum OrbMode {
+    MODE_DIRECT,
+    MODE_PATTERN
+} mode = MODE_DIRECT;
+
+int duty = ANALOG_MAX / 2;
 
 unsigned char saturation = 255;
 unsigned char brightness = 255;
 
-unsigned long off_delay = 42;
-unsigned long on_delay = 84;
+bool active = false;
+
+unsigned long blink_period = 0;
 
 unsigned long last_on = 0;
 unsigned long next_on = 0;
 unsigned long next_off = 0;
 
 
+void reschedule() {
+    const unsigned long off_delay = (unsigned long)(blink_period * (ANALOG_MAX - duty) / ANALOG_MAX);
+    next_off = last_on + off_delay;
+    next_on = last_on + blink_period;
+}
 
+void set_color(rgb c) {
+    analogWrite(LED_R, c.r);
+    analogWrite(LED_G, c.g);
+    analogWrite(LED_B, c.b);
+}
 
 void on() {
-    unsigned char r, g, b;
-    unsigned char h = random(255);
-    unsigned char s = saturation;
-    unsigned char v = brightness;
-    unsigned char region, fpart, p, q, t;
+    set_color(
+        hsv(random(255),
+            saturation,
+            brightness));
 
-    if(s == 0) {
-        /* color is grayscale */
-        r = g = b = v;
-        return;
-    }
-
-    /* make hue 0-5 */
-    region = h / 43;
-    /* find remainder part, make it from 0-255 */
-    fpart = (h - (region * 43)) * 6;
-
-    /* calculate temp vars, doing integer multiplication */
-    p = (v * (255 - s)) >> 8;
-    q = (v * (255 - ((s * fpart) >> 8))) >> 8;
-    t = (v * (255 - ((s * (255 - fpart)) >> 8))) >> 8;
-
-    /* assign temp vars based on color cone region */
-    switch(region) {
-        case 0:
-            r = v; 
-            g = t; 
-            b = p; 
-            break;
-        case 1:
-            r = q; 
-            g = v; 
-            b = p; 
-            break;
-        case 2:
-            r = p; 
-            g = v; 
-            b = t; 
-            break;
-        case 3:
-            r = p; 
-            g = q; 
-            b = v; 
-            break;
-        case 4:
-            r = t; 
-            g = p; 
-            b = v; 
-            break;
-        default:
-            r = v; 
-            g = p; 
-            b = q; 
-            break;
-    }
-
-    analogWrite(LED_R, r);
-    analogWrite(LED_G, g);
-    analogWrite(LED_B, b);
+    last_on = micros();
+    reschedule();
 }
 
 void off() {
-    analogWrite(LED_R, 0);
-    analogWrite(LED_G, 0);
-    analogWrite(LED_B, 0);
+    set_color(rgb(0, 0, 0));
 }
 
-void reschedule() {
-    next_off = last_on + off_delay;
-    next_on = last_on + on_delay;
-}
 
 void setup() {
-    // analog
-    //pinMode(POT_LEFT, INPUT);
-    //pinMode(POT_MIDDLE, INPUT);
-    //pinMode(POT_RIGHT, INPUT);
+    // 32kHz PWM frequency
+    TCCR1B = (TCCR1B & 0b11111000) | 1;
+    TCCR2B = (TCCR2B & 0b11111000) | 1;
+
     pinMode(POT_GND, OUTPUT);
     digitalWrite(POT_GND, LOW); 
     pinMode(POT_VCC, OUTPUT);
@@ -129,24 +99,22 @@ void setup() {
     reschedule();
 }
 
-void reset_off() {
-    float dutyf = 1.0 - duty / 1024.0;
-    off_delay = (unsigned long)(on_delay * dutyf);
+void set_period(unsigned long period) {
+    if (!active) {
+        active = true;
+        last_on = micros();
+    }
+
+    blink_period = period;
+    reschedule();
 }
 
-unsigned long ndelays = 0;
-unsigned long delay0 = 0;
-unsigned long delay1 = 0;
-
-bool active = false;
-
-#define MONITOR_EXPRESSION(x) { Serial.print(#x ": "); Serial.println((x)); }
+TapTempo tap_tempo(MAX_DELAY, set_period);
 
 void read_control() {
     static int last_duty = duty;
     duty = analogRead(POT_LEFT);
     if (abs(duty - last_duty) > 2) {
-        reset_off();
         reschedule();
     }
     last_duty = duty;
@@ -154,48 +122,11 @@ void read_control() {
     saturation = max(255 - analogRead(POT_MIDDLE) / 4, 10);
     brightness = max(255 - analogRead(POT_RIGHT) / 4, 0);
 
-    static unsigned long last_tap = 0;
     static bool last_button = 0;
     bool button = digitalRead(BUTTON);
     if (button < last_button) {
-        unsigned long delay = micros() - last_tap;
-        last_tap = micros();
-        if (delay < MAX_DELAY) {
-            MONITOR_EXPRESSION(delay);
-            if (ndelays == 0) {
-                ndelays = 1;
-                delay0 = delay;
-            } else if (ndelays == 1) {
-                ndelays = 2;
-                delay1 = delay;
-                delay = (delay0 + delay1) / 2;
-            } else {
-                delay0 = delay0 / 4 + delay1 * 3 / 4;
-                delay1 = delay;
-                delay = (delay0 + delay1) / 2;
-            }
-
-            if (!active && ndelays > 1) {
-                active = true;
-                last_on = micros();
-                reschedule();
-            }
-
-            on_delay = delay / 2;
-            reset_off();
-            reschedule();
-
-            MONITOR_EXPRESSION(delay0);
-            MONITOR_EXPRESSION(delay1);
-            MONITOR_EXPRESSION(ndelays);
-            MONITOR_EXPRESSION(delay);
-        }
+        tap_tempo.tap();
     }
-
-    if (micros() - last_tap > MAX_DELAY) {
-        ndelays = 0;
-    }
-
     last_button = button;
 }
 
@@ -204,8 +135,6 @@ void loop() {
 
     if (active && t > next_on) {
         on();
-        last_on = t;
-        reschedule();
     }
     if (t > next_off) {
         off();
