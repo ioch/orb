@@ -26,6 +26,8 @@
 
 Messenger messenger;
 
+TapTempo tap_tempo(MAX_DELAY, set_period);
+
 
 enum OrbMode {
     MODE_DIRECT,
@@ -42,14 +44,16 @@ int duty_pattern[PATTERN_SIZE] = {
 int pattern_index;
 
 
-int duty = ANALOG_MAX / 2;
+//int duty = ANALOG_MAX / 2;
+int duty = ANALOG_MAX;
 
 unsigned char saturation = 255;
 unsigned char brightness = 255;
 
-bool active = false;
+//bool active = false;
+bool active = true;
 
-unsigned long blink_period = 0;
+unsigned long blink_period = 100000;
 
 unsigned long last_on = 0;
 unsigned long next_on = 0;
@@ -96,8 +100,15 @@ void off() {
 void message_ready() {
     while (messenger.available()) {
         mode = MODE_PATTERN;
-        for (int i = 0; i < PATTERN_SIZE; ++i) {
-            duty_pattern[i] = messenger.readInt();
+        switch (messenger.readChar()) {
+            case 'd':
+                for (int i = 0; i < PATTERN_SIZE; ++i) {
+                    duty_pattern[i] = messenger.readInt();
+                }
+                break;
+            case 't':
+                tap_tempo.tap();
+                break;
         }
     }
 }
@@ -138,11 +149,9 @@ void set_period(unsigned long period) {
         last_on = micros();
     }
 
-    blink_period = period;
+    blink_period = period / 2;
     reschedule();
 }
-
-TapTempo tap_tempo(MAX_DELAY, set_period);
 
 void read_control() {
     static int last_duty = duty;
@@ -173,7 +182,7 @@ void loop() {
         off();
     }
 
-    read_control();
+    //read_control();
 
     while (Serial.available()) {
         messenger.process(Serial.read());
