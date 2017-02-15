@@ -1,3 +1,5 @@
+#include <EEPROM.h>
+
 #include <Messenger.h>
 #include "color.h"
 #include "taptempo.h"
