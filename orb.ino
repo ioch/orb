@@ -34,14 +34,14 @@ enum OrbMode {
     MODE_PATTERN
 } mode = MODE_DIRECT;
 
-#define PATTERN_SIZE 4
-rgb rgb_pattern[PATTERN_SIZE] = {
-    rgb(255, 255, 255), rgb(0, 255, 0), rgb(255, 255, 255), rgb(0, 255, 0),
-};
-int duty_pattern[PATTERN_SIZE] = {
-    512, 1, 1, 1,
-};
-int pattern_index;
+//~ #define PATTERN_SIZE 4
+//~ rgb rgb_pattern[PATTERN_SIZE] = {
+    //~ rgb(255, 255, 255), rgb(0, 255, 0), rgb(255, 255, 255), rgb(0, 255, 0),
+//~ };
+//~ int duty_pattern[PATTERN_SIZE] = {
+    //~ 512, 1, 1, 1,
+//~ };
+//~ int pattern_index;
 
 
 int duty = ANALOG_MAX / 2;
@@ -80,9 +80,9 @@ void on() {
             break;
 
         case MODE_PATTERN:
-            set_color(rgb_pattern[pattern_index].scaled(brightness));
-            duty = duty_pattern[pattern_index];
-            pattern_index = (pattern_index + 1) % PATTERN_SIZE;
+            //~ set_color(rgb_pattern[pattern_index].scaled(brightness));
+            //~ duty = duty_pattern[pattern_index];
+            //~ pattern_index = (pattern_index + 1) % PATTERN_SIZE;
             break;
     }
 
