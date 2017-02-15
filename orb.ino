@@ -11,19 +11,24 @@
 
 #define ANALOG_MAX 1024
 
-#define LED_GND 8
+//~ #define LED_GND 8
 #define LED_R 9
 #define LED_G 10
 #define LED_B 11
 
-#define POT_RIGHT A0
-#define POT_MIDDLE A1
+#define POT_RIGHT A1
+#define POT_MIDDLE A2
 #define POT_LEFT A3
-#define POT_GND A2
-#define POT_VCC A4
+//~ #define POT_GND A2
+//~ #define POT_VCC A4
 
-#define BUTTON_GND 6
-#define BUTTON 7
+//~ #define BUTTON_GND 6
+#define BUTTON A4
+#define TERMISTOR_ENABLE 12
+#define TERMISTOR A0
+
+#define FAN_SENSE 5
+#define FAN_CTRL 6
 
 
 Messenger messenger;
@@ -113,17 +118,16 @@ void setup() {
     TCCR1B = (TCCR1B & 0b11111000) | 1;
     TCCR2B = (TCCR2B & 0b11111000) | 1;
 
-    pinMode(POT_GND, OUTPUT);
-    digitalWrite(POT_GND, LOW); 
-    pinMode(POT_VCC, OUTPUT);
-    digitalWrite(POT_VCC, HIGH); 
 
     pinMode(BUTTON, INPUT_PULLUP);
-    pinMode(BUTTON_GND, OUTPUT);
-    digitalWrite(BUTTON_GND, LOW); 
+	pinMode(TERMISTOR_ENABLE, OUTPUT);
+	digitalWrite(TERMISTOR_ENABLE, HIGH);
+	pinMode(TERMISTOR, INPUT);
+	pinMode(FAN_SENSE, INPUT_PULLUP);
+	pinMode(FAN_CTRL, OUTPUT);
+	digitalWrite(FAN_CTRL, HIGH);
+	
 
-    pinMode(LED_GND, OUTPUT);
-    digitalWrite(LED_GND, LOW); 
     pinMode(LED_R, OUTPUT);
     digitalWrite(LED_R, LOW);
     pinMode(LED_G, OUTPUT);
