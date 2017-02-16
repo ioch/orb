@@ -62,6 +62,9 @@ unsigned long last_on = 0;
 unsigned long next_on = 0;
 unsigned long next_off = 0;
 
+unsigned char fanpwm = 255;
+
+unsigned int  temperature = 0;
 
 void reschedule() {
     const unsigned long off_delay = (unsigned long)(blink_period * duty / ANALOG_MAX);
@@ -102,10 +105,11 @@ void off() {
 
 void message_ready() {
     while (messenger.available()) {
-        mode = MODE_PATTERN;
-        for (int i = 0; i < PATTERN_SIZE; ++i) {
-            duty_pattern[i] = messenger.readInt();
-        }
+        messenger.readInt();
+//        mode = MODE_PATTERN;
+//        for (int i = 0; i < PATTERN_SIZE; ++i) {
+//            duty_pattern[i] = messenger.readInt();
+//        }
     }
 }
 
@@ -120,12 +124,12 @@ void setup() {
 
 
     pinMode(BUTTON, INPUT_PULLUP);
-	pinMode(TERMISTOR_ENABLE, OUTPUT);
-	digitalWrite(TERMISTOR_ENABLE, HIGH);
-	pinMode(TERMISTOR, INPUT);
-	pinMode(FAN_SENSE, INPUT_PULLUP);
-	pinMode(FAN_CTRL, OUTPUT);
-	digitalWrite(FAN_CTRL, HIGH);
+  	pinMode(TERMISTOR_ENABLE, OUTPUT);
+  	digitalWrite(TERMISTOR_ENABLE, HIGH);
+  	pinMode(TERMISTOR, INPUT);
+  	pinMode(FAN_SENSE, INPUT_PULLUP);
+  	pinMode(FAN_CTRL, OUTPUT);
+  	analogWrite(FAN_CTRL, 255);
 	
 
     pinMode(LED_R, OUTPUT);
@@ -169,8 +173,25 @@ void read_control() {
     last_button = button;
 }
 
+void get_fan_speed(){
+}
+unsigned long datapoints = 0;
+
+void get_led_temp(){
+  int readings = analogRead(TERMISTOR);
+  temperature = (temperature - (temperature - readings) >>2);
+  datapoints ++;
+  if (datapoints >= 1000){
+      Serial.println(temperature);
+      datapoints = 0;
+  }
+}
+
 void loop() {
     unsigned long t = micros();
+    analogWrite(FAN_CTRL, fanpwm);
+    get_fan_speed();
+    get_led_temp();
 
     if (active && t > next_on) {
         on();
