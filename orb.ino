@@ -151,12 +151,12 @@ void read_control() {
     pot_left =  pot_left -(pot_left -analogRead(POT_LEFT)) >>2 ;
     pot_middle =  pot_left -(pot_left -analogRead(POT_MIDDLE)) >>2;
     pot_right =  pot_left -(pot_left -analogRead(POT_RIGHT)) >> 2;
-    Serial.print("PL:");
-    Serial.print(pot_left);
-    Serial.print("PM:");
-    Serial.print(pot_middle);
-    Serial.print("PR:");
-    Serial.println(pot_right);              
+//    Serial.print("PL:");        //debug
+//    Serial.print(pot_left);
+//    Serial.print("PM:");
+//    Serial.print(pot_middle);
+//    Serial.print("PR:");
+//    Serial.println(pot_right);              
 }
 
 unsigned long datapoints = 0;
@@ -170,7 +170,7 @@ void led_temp(){
       Serial.println(temperature);
       datapoints = 0;
   }
-  if (temperature > 190){
+  if (temperature > 182){
     fanpwm = 0;
   }else if (temperature >170){
     fanpwm = 100;
