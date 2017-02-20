@@ -36,7 +36,8 @@ Messenger messenger;
 
 enum OrbMode {
     MODE_PARTY,
-    MODE_LIGHT
+    MODE_LIGHT,
+    MODE_COMM
 } mode = MODE_PARTY;
 
 //~ #define PATTERN_SIZE 4
@@ -66,11 +67,20 @@ unsigned char fanpwm = 255;
 
 unsigned int  temperature = 0;
 
+//void(* resetFunc) (void) = 0; //declare reset function @ address 0
+void resetFunc(){
+  asm("jmp 0x3800");
+}
+
 void reschedule() {
     const unsigned long off_delay = (unsigned long)(blink_period * duty / ANALOG_MAX);
     next_off = last_on + off_delay;
     next_on = last_on + blink_period;
 }
+
+unsigned int red = 0;
+unsigned int green = 0;
+unsigned int blue = 0;
 
 void set_color(rgb c) {
     analogWrite(LED_R, c.r);
@@ -91,7 +101,42 @@ void off() {
 
 void message_ready() {
     while (messenger.available()) {
-        fanpwm = 255-messenger.readInt();
+      unsigned char task = messenger.readChar();
+      switch (task){
+        case 0x46: // F Fan
+          fanpwm= 255-messenger.readInt();
+          Serial.print("FAN:");
+          Serial.println(255-fanpwm);
+          break;
+        case 0x52:  //R Reset
+          Serial.println("RESETING");
+          delay(1);
+          resetFunc();
+          break; 
+        case 0x4d:  //M Mode (valid 0, 1, 2)
+          Serial.println(mode);
+          mode = messenger.readInt();
+          Serial.print("MODE:");
+          Serial.println(mode);
+          break;
+        case 0x43: //C COLOR (valid rr gg bb)
+          red = messenger.readInt();
+          green = messenger.readInt();
+          blue = messenger.readInt();
+          Serial.print("COLOR:");
+          Serial.print(red);
+          Serial.print(green);
+          Serial.println(blue);
+          break;
+        case 0x53: //S Save  - save rgb to eeprom
+          Serial.print("writing EEPROM! ");
+          EEPROM.write(0, red);
+          EEPROM.write(1, green);
+          EEPROM.write(2, blue);
+          Serial.println("Done");
+          break;
+          
+      }
         
 //        mode = MODE_PATTERN;
 //        for (int i = 0; i < PATTERN_SIZE; ++i) {
@@ -102,7 +147,7 @@ void message_ready() {
 
 
 void setup() {
-    Serial.begin(115200); 
+    Serial.begin(57600); 
     messenger.attach(message_ready);
 
     // 32kHz PWM frequency
@@ -111,19 +156,21 @@ void setup() {
 
 
     pinMode(BUTTON, INPUT_PULLUP);
-  	pinMode(TERMISTOR_ENABLE, OUTPUT);
-  	digitalWrite(TERMISTOR_ENABLE, HIGH);
-  	pinMode(TERMISTOR, INPUT);
-  	pinMode(FAN_SENSE, INPUT_PULLUP);
-  	pinMode(FAN_CTRL, OUTPUT);
-  	analogWrite(FAN_CTRL, 255);
-
     pinMode(LED_R, OUTPUT);
     digitalWrite(LED_R, LOW);
     pinMode(LED_G, OUTPUT);
     digitalWrite(LED_G, LOW);
     pinMode(LED_B, OUTPUT);
     digitalWrite(LED_B, LOW);
+    pinMode(FAN_CTRL, OUTPUT);
+    analogWrite(FAN_CTRL, 255);
+  	pinMode(TERMISTOR_ENABLE, OUTPUT);
+  	digitalWrite(TERMISTOR_ENABLE, HIGH);
+  	pinMode(TERMISTOR, INPUT);
+  	pinMode(FAN_SENSE, INPUT_PULLUP);
+    red = EEPROM.read(0);
+    green = EEPROM.read(1);
+    blue = EEPROM.read(2);
     if (digitalRead(BUTTON) == LOW){
       mode = MODE_LIGHT;
     }
@@ -169,7 +216,7 @@ void led_temp(){
       Serial.print("T:");
       Serial.println(temperature);
       datapoints = 0;
-  }
+  } 
   if (temperature > 182){
     fanpwm = 0;
   }else if (temperature >170){
@@ -189,12 +236,8 @@ void manageLED(){
     saturation = max(255 - pot_middle / 4, 10);
     brightness = max(255 - pot_right / 4, 0);
 
-    static bool last_button = 0;
-    bool button = digitalRead(BUTTON);
-    if (button < last_button) {
-        tap_tempo.tap();
-    }
-    last_button = button;
+
+
 
     if (active && t > next_on) {
         on();
@@ -210,16 +253,30 @@ void loop() {
     analogWrite(FAN_CTRL, fanpwm);
     led_temp();
     read_control();
+    static bool last_button = 0;
+    bool button = digitalRead(BUTTON);
     switch (mode) {
         case MODE_PARTY:
             manageLED();
+            if (button < last_button) {
+              tap_tempo.tap();
+            }
             break;
 
         case MODE_LIGHT:
             set_color(rgb(pot_left/4,pot_middle/4,pot_right/4));
+            if (button < last_button) {
+              mode = MODE_COMM;
+            }
+            break;
+        case MODE_COMM:
+            set_color(rgb(red,green,blue));
+            if (button < last_button) {
+              mode = MODE_LIGHT;
+            }
             break;
     }    
-
+    last_button = button;   
 
 
     while (Serial.available()) {
