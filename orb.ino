@@ -125,7 +125,9 @@ void message_ready() {
           blue = messenger.readInt();
           Serial.print("COLOR:");
           Serial.print(red);
+          Serial.print(" ");
           Serial.print(green);
+          Serial.print(" ");
           Serial.println(blue);
           break;
         case 0x53: //S Save  - save rgb to eeprom
@@ -135,7 +137,25 @@ void message_ready() {
           EEPROM.write(2, blue);
           Serial.println("Done");
           break;
-          
+        case 0x47: // G Get from eeprom
+          red = EEPROM.read(0);
+          green = EEPROM.read(1);
+          blue = EEPROM.read(2);
+          Serial.print("COLOR:");
+          Serial.print(red);
+          Serial.print(" ");
+          Serial.print(green);
+          Serial.print(" ");
+          Serial.println(blue);
+          break;
+        case 0x48: //H Help
+          Serial.println("H Help");
+          Serial.println("R Reset");
+          Serial.println("C <r> <g> <b> Color red green blue");
+          Serial.println("M <0-2> Mode party, analog remote");
+          Serial.println("S Save to eeprom");
+          Serial.println("G Get from eeprom"); 
+        break;        
       }
         
 //        mode = MODE_PATTERN;
@@ -212,7 +232,7 @@ void led_temp(){
   int readings = analogRead(TERMISTOR);
   temperature = (temperature - (temperature - readings) >>2);
   datapoints ++;
-  if (datapoints >= 1000){
+  if (datapoints >= 10000){
       Serial.print("T:");
       Serial.println(temperature);
       datapoints = 0;
