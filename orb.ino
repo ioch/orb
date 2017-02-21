@@ -40,14 +40,6 @@ enum OrbMode {
     MODE_COMM
 } mode = MODE_PARTY;
 
-//~ #define PATTERN_SIZE 4
-//~ rgb rgb_pattern[PATTERN_SIZE] = {
-    //~ rgb(255, 255, 255), rgb(0, 255, 0), rgb(255, 255, 255), rgb(0, 255, 0),
-//~ };
-//~ int duty_pattern[PATTERN_SIZE] = {
-    //~ 512, 1, 1, 1,
-//~ };
-//~ int pattern_index;
 
 
 int duty = ANALOG_MAX / 2;
@@ -65,7 +57,13 @@ unsigned long next_off = 0;
 
 unsigned char fanpwm = 255;
 
-unsigned int  temperature = 0;
+signed int pot_left = 0;
+signed int pot_middle = 0;
+signed int pot_right = 0;
+
+signed int  temperature = 0;
+
+unsigned long t = 0;
 
 //void(* resetFunc) (void) = 0; //declare reset function @ address 0
 void resetFunc(){
@@ -156,6 +154,18 @@ void message_ready() {
           Serial.println("S Save to eeprom");
           Serial.println("G Get from eeprom"); 
         break;        
+        case 0x50: //P poteciometer print
+          Serial.print("PL:");        //debug
+          Serial.print(pot_left);
+          Serial.print("PM:");
+          Serial.print(pot_middle);
+          Serial.print("PR:");
+          Serial.println(pot_right);           
+          break;
+        case 0x54: //T Temperature
+          Serial.print("T:");
+          Serial.println(temperature);
+          break;
       }
         
 //        mode = MODE_PATTERN;
@@ -210,42 +220,40 @@ void set_period(unsigned long period) {
 
 TapTempo tap_tempo(MAX_DELAY, set_period);
 
-unsigned int pot_left = 0;
-unsigned int pot_middle = 0;
-unsigned int pot_right = 0;
-
 void read_control() {
-    pot_left =  pot_left -(pot_left -analogRead(POT_LEFT)) >>2 ;
-    pot_middle =  pot_left -(pot_left -analogRead(POT_MIDDLE)) >>2;
-    pot_right =  pot_left -(pot_left -analogRead(POT_RIGHT)) >> 2;
-//    Serial.print("PL:");        //debug
-//    Serial.print(pot_left);
-//    Serial.print("PM:");
-//    Serial.print(pot_middle);
-//    Serial.print("PR:");
-//    Serial.println(pot_right);              
+    pot_left =  pot_left +((analogRead(POT_LEFT) -pot_left) >>2) ;
+    pot_middle =  pot_middle +((analogRead(POT_MIDDLE) -pot_middle) >>2);
+    pot_right =  pot_right +((analogRead(POT_RIGHT) -pot_right) >> 2);          
 }
 
 unsigned long datapoints = 0;
 
 void led_temp(){
   int readings = analogRead(TERMISTOR);
-  temperature = (temperature - (temperature - readings) >>2);
+  temperature = (temperature + ((readings - temperature) >>2));
   datapoints ++;
-  if (datapoints >= 10000){
-      Serial.print("T:");
-      Serial.println(temperature);
-      datapoints = 0;
-  } 
-  if (temperature > 182){
+  if (datapoints >= 1000){
+//      Serial.print("T:");
+//      Serial.println(temperature);
+//      datapoints = 0;
+  if (temperature > 800){
+    mode = 2;
+    red = 0;
+    green = 0;
+    blue = 0;
+    Serial.print("Termal shutdown, T:");
+    Serial.println(temperature);
+  }else  if (temperature > 728){
     fanpwm = 0;
-  }else if (temperature >170){
+  }else if (temperature >680){
     fanpwm = 100;
   }else fanpwm = 255;
+  datapoints = 0;
+  } 
 }
 
 void manageLED(){
-    unsigned long t = micros();
+
     static int last_duty = duty;
     duty = ANALOG_MAX - pot_left;
     if (abs(duty - last_duty) > 2) {
@@ -270,6 +278,7 @@ void manageLED(){
 
 
 void loop() {
+    t = micros();
     analogWrite(FAN_CTRL, fanpwm);
     led_temp();
     read_control();

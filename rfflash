@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-echo -e "R\r" > $1 && sleep 0.1 && /usr/share/arduino/hardware/tools/avr/bin/avrdude -C/usr/share/arduino/hardware/tools/avr/etc/avrdude.conf -v -patmega328p -carduino -P$1 -b57600 -D -Uflash:w:orb.ino.eightanaloginputs.hex:i 
+echo -e "R\r" > $1 && sleep 0.2 && /usr/share/arduino/hardware/tools/avr/bin/avrdude -C/usr/share/arduino/hardware/tools/avr/etc/avrdude.conf -v -patmega328p -carduino -P$1 -b57600 -D -Uflash:w:orb.ino.eightanaloginputs.hex:i 
