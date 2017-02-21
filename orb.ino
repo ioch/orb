@@ -235,21 +235,20 @@ void led_temp(){
   if (datapoints >= 1000){
 //      Serial.print("T:");
 //      Serial.println(temperature);
-//      datapoints = 0;
-  if (temperature > 800){
+  if (temperature > 900){ //980 is ~100C 900 is ~65C
     mode = 2;
     red = 0;
     green = 0;
     blue = 0;
     Serial.print("Termal shutdown, T:");
     Serial.println(temperature);
-  }else  if (temperature > 728){
+  }else  if (temperature > 800){ //800 is ~ 50C
     fanpwm = 0;
-  }else if (temperature >680){
+  }else if (temperature >700){ //700 is ~40C
     fanpwm = 100;
   }else fanpwm = 255;
   datapoints = 0;
-  } 
+  }
 }
 
 void manageLED(){
