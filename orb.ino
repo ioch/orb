@@ -244,7 +244,7 @@ void led_temp(){
     Serial.println(temperature);
   }else  if (temperature > 800){ //800 is ~ 50C
     fanpwm = 0;
-  }else if (temperature >700){ //700 is ~40C
+  }else if (temperature >700){ //700 is ~40C 
     fanpwm = 100;
   }else fanpwm = 255;
   datapoints = 0;
