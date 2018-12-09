@@ -102,9 +102,9 @@ void message_ready() {
       unsigned char task = messenger.readChar();
       switch (task){
         case 0x46: // F Fan
-          fanpwm= 255-messenger.readInt();
+          fanpwm= messenger.readInt();
           Serial.print("FAN:");
-          Serial.println(255-fanpwm);
+          Serial.println(fanpwm);
           break;
         case 0x52:  //R Reset
           Serial.println("RESETING");
@@ -113,7 +113,7 @@ void message_ready() {
           break; 
         case 0x4d:  //M Mode (valid 0, 1, 2)
           Serial.println(mode);
-          mode = messenger.readInt();
+          mode = (OrbMode)messenger.readInt();
           Serial.print("MODE:");
           Serial.println(mode);
           break;
@@ -149,10 +149,13 @@ void message_ready() {
         case 0x48: //H Help
           Serial.println("H Help");
           Serial.println("R Reset");
+          Serial.println("F <pwm> Fan speed");
           Serial.println("C <r> <g> <b> Color red green blue");
           Serial.println("M <0-2> Mode party, analog remote");
           Serial.println("S Save to eeprom");
           Serial.println("G Get from eeprom"); 
+          Serial.println("P print pot value"); 
+          Serial.println("T get temperature"); 
         break;        
         case 0x50: //P poteciometer print
           Serial.print("PL:");        //debug
@@ -166,12 +169,7 @@ void message_ready() {
           Serial.print("T:");
           Serial.println(temperature);
           break;
-      }
-        
-//        mode = MODE_PATTERN;
-//        for (int i = 0; i < PATTERN_SIZE; ++i) {
-//            duty_pattern[i] = messenger.readInt();
-//        }
+        }
     }
 }
 
@@ -236,17 +234,17 @@ void led_temp(){
 //      Serial.print("T:");
 //      Serial.println(temperature);
   if (temperature > 900){ //980 is ~100C 900 is ~65C
-    mode = 2;
+    mode = MODE_COMM;
     red = 0;
     green = 0;
     blue = 0;
     Serial.print("Termal shutdown, T:");
     Serial.println(temperature);
   }else  if (temperature > 800){ //800 is ~ 50C
-    fanpwm = 0;
+    fanpwm = 255;
   }else if (temperature >700){ //700 is ~40C 
-    fanpwm = 100;
-  }else fanpwm = 255;
+    fanpwm = 150;
+  }else fanpwm = 0;
   datapoints = 0;
   }
 }
